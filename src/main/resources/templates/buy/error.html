@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" charset="UTF-8">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Top navegation -->
+<nav th:replace="fragments/nav"/>
+<p th:text="#{buy.error.message}">Message</p>
+<div class="container">
+    <div class="container">
+        <p th:text="${product.title}">Title</p>
+        <p th:text="${product.description}">Description</p>
+        <p th:text="${product.getFormatedPrice()}+' €'">15 €</p>
+        <a th:text="#{buy.error.return}"
+           href="/buy/list/"></a>
+    </div>
+
+</div>
+</body>
+<footer th:replace="fragments/footer"/>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" charset="UTF-8">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Top navegation -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <p th:text="#{highlight.error.message}">Message</p>
+    <a th:text="#{hightlight.error.return}"
+       href="/sales/list"></a>
+</div>
+</body>
+<footer th:replace="fragments/footer"/>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" charset="UTF-8">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Top navegation -->
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <h2 th:text="#{signup.message}"></h2>
+
+    <!-- Form for the registry -->
+    <form class="form-horizontal" method="post" action="/signup"
+          th:object="${user}">
+        <!--Email -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">eMail:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="email"
+                       placeholder="Example: yourEmail@email.com" required="true"/>
+                <span
+                        class="text-danger" th:if="${#fields.hasErrors('email')}"
+                        th:errors="*{email}"/>
+            </div>
+        </div>
+
+        <!-- Name -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name" th:text="#{form.field.name}"> </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="name"
+                       placeholder="Example: Antonio" required="true"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('name')}"
+                        th:errors="*{name}"/>
+            </div>
+        </div>
+
+        <!-- Surname -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="lastName" th:text="#{form.field.lastName}"></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="lastName"
+                       placeholder="Example: Rodriguez" required="true"/>
+                <span class="text-danger" th:if="${#fields.hasErrors('lastName')}"
+                      th:errors="*{name}"/>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="password" th:text="#{form.field.password}">:</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="password"
+                       placeholder="Your password" required="true" />
+                <span class="text-danger"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}"/>
+            </div>
+        </div>
+
+        <!-- Password Confirm-->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="passwordConfirm" th:text="#{form.field.passwordConfirm}"></label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="passwordConfirm"
+                       placeholder="Repeat your password" required="true" />
+                <span class="text-danger"
+                      th:if="${#fields.hasErrors('passwordConfirm')}"
+                      th:errors="*{passwordConfirm}"/>
+            </div>
+        </div>
+
+
+       <!-- Submit button -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" th:text="#{signup.message}"></button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

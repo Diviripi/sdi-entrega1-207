@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head"/>
+<body>
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <h2 th:text="#{product.add.message}"></h2>
+    <form class="form-horizontal" method="post" action="/sales/addProduct" th:object="${product}">
+
+        <!--Title -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="title" th:text="#{product.field.title}"></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="title"
+                       placeholder="Title" required="true"/>
+                <span
+                        class="text-danger" th:if="${#fields.hasErrors('title')}"
+                        th:errors="*{title}"/>
+            </div>
+        </div>
+
+
+        <!-- Description -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="description" th:text="#{product.field.description}"></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="description"
+                       placeholder="Description" required="true"/>
+                <span
+                        class="text-danger" th:if="${#fields.hasErrors('description')}"
+                        th:errors="*{description}"/>
+            </div>
+        </div>
+        <!-- Price -->
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="price" th:text="#{product.field.price}"></label>
+            <div class="col-sm-10">
+                <input type="number" step=".01" class="form-control" name="price"
+                       placeholder="Price" required="true"/><span>€</span>
+                <span
+                        class="text-danger" th:if="${#fields.hasErrors('price')}"
+                        th:errors="*{price}"/>
+            </div>
+        </div>
+        <!-- Highlight -->
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="highlighted" id="highlighted"
+                   placeholder="highlighted">
+            <label class="form-check-label" for="highlighted" th:text="#{product.field.highlight}"></label>
+        </div>
+        <!-- Submit -->
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+
+                <button type="submit" class="btn btn-primary" th:text="#{product.field.createOffer}"></button>
+            </div>
+        </div>
+        <input type="hidden" name="${_csrf.parameterName}"
+               value="${_csrf.token}"/>
+    </form>
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

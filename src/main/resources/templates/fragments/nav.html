@@ -1,0 +1,99 @@
+<!-- nav.html -->
+<nav class="navbar navbar-inverse" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#myNavbar">
+                <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+
+
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+                <li><a href="/buy/list" th:text="#{nav.field.shop}"></a></li>
+
+                <li id="products-menu" class="dropdown">
+                    <a class="dropdown-toggle"
+                       data-toggle="dropdown" href="#" th:utext="#{nav.field.myProducts } ">
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li><a href="/sales/addProduct" th:text="#{nav.field.myProducts.add}"></a></li>
+                        <li><a href="/sales/list" th:text="#{nav.field.myProducts.list}"></a></li>
+                        <li><a href="/sales/highlighted" th:text="#{nav.field.myProducts.highlighted}"></a></li>
+                    </ul>
+                </li>
+
+                <li id="bough-menu" class="dropdown">
+                <li><a href="/bought/list" th:text="#{nav.field.bought}"></a></li>
+                </li>
+
+                <li id="conversations-menu" class="dropdown">
+                <li><a href="/conversations/list" th:text="#{nav.field.conversations}"></a></li>
+                </li>
+
+
+                <li id=users-list sec:authorize="hasRole('ROLE_ADMIN')"><a href="/users/list"
+                                                                           th:text="#{nav.field.users.list}"></a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown"><a id="btnLanguage" href="#"
+                                        class="dropdown-toggle" data-toggle="dropdown" role="button"
+                                        aria-haspopup="true" aria-expanded="false"> <span
+                        th:text="#{language.change}"></span> <span class="caret"></span>
+                </a>
+                    <ul id="languageDropdownMenuButton" class="dropdown-menu">
+                        <li><a id="btnEnglish" value="EN"> <img height="30px"
+                                                                th:src="@{/img/icon_UK.jpg}"
+                                                                style="border: 0; float: left; margin-right: 15px"/>
+                            <span
+                                    th:text="#{language.en}">Inglés</span>
+                        </a></li>
+                        <li><a id="btnSpanish" value="ES"> <img height="30px"
+                                                                th:src="@{/img/icon_spain.jpg}"
+                                                                style="border: 0; float: left; margin-right: 15px"/>
+                            <span
+                                    th:text="#{language.es}">Español</span>
+                        </a></li>
+                    </ul>
+                </li>
+                <li sec:authorize="!isAuthenticated()"><a href="/signup"
+                                                          th:text="#{signup.message}"> <span
+                        class="glyphicon glyphicon-user"></span> Registrate
+                </a></li>
+                <li sec:authorize="!isAuthenticated()"><a href="/login"
+                                                          th:text="#{login.message}"> <span
+                        class="glyphicon glyphicon-log-in"></span> Identifícate
+                </a></li>
+
+
+                <li sec:authorize="isAuthenticated()" id="account-menu" class="dropdown ">
+                    <a class="dropdown-toggle"
+                       data-toggle="dropdown" href="#" th:utext="#{nav.account}">
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item text-center" sec:authentication="principal.username">
+                        </li>
+                        <li class="dropdown-item text-center" th:text="${user.money  +' €'}">
+                        </li>
+                        <div class="dropdown-divider"></div>
+
+                        <li><a href="/logout" th:text="#{nav.account.disconnect}"> <span
+                                class="glyphicon glyphicon-log-out"></span> Desconectar
+                        </a>
+                        </li>
+
+
+                    </ul>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+    </div>
+</nav>

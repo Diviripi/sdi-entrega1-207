@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" charset="UTF-8">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Top navegation -->
+<nav th:replace="fragments/nav"/>
+
+
+<div class="container">
+    <h2 th:text="#{conversation.list.title}"></h2>
+    <div class="table-responsive">
+        <table class="table table-hover" th:fragment="tableProducts"
+               id="tableProducts">
+            <thead>
+            <tr>
+                <th th:text="#{conversation.list.product}"></th>
+                <th class="col-md-1"></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="conversation : ${conversationList}">
+                <td th:text="${conversation.product.title}">Title</td>
+                <td>
+                    <a th:text="#{conversation.list.show}"
+                       th:href="${'/product/conversation/' + conversation.product.id}"></a>
+                    <a th:text="#{conversation.list.delete}"
+                       th:href="${'/product/conversation/delete/' + conversation.product.id}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer th:replace="fragments/pagination"/>
+
+</div>
+
+
+</body>
+</html>

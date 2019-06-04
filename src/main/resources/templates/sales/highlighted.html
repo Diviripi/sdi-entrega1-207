@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" charset="UTF-8">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Top navegation -->
+<nav th:replace="fragments/nav"/>
+
+
+<div class="container">
+    <h2 th:text="#{product.highlighted.list.message}"></h2>
+
+
+    <div class="table-responsive">
+        <table class="table table-hover" th:fragment="tableMarks"
+               id="tableMarks">
+            <thead>
+            <tr>
+                <th th:text="#{product.field.title}"></th>
+                <th th:text="#{product.field.description}"></th>
+                <th th:text="#{product.field.price}"></th>
+                <th class="col-md-1"></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${productList}">
+                <td th:text="${product.title}">Title</td>
+                <td th:text="${product.description}">Description</td>
+                <td th:text="${product.getFormatedPrice()}+' €'">15 €</td>
+                <td><a th:href="${'/sales/delete/' + product.id}" th:text="#{product.field.delete}">eliminar</a></td>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

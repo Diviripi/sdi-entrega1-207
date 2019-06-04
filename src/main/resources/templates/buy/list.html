@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" charset="UTF-8">
+<head th:replace="fragments/head"/>
+<body>
+<!-- Top navegation -->
+<nav th:replace="fragments/nav"/>
+
+
+<div class="container">
+    <h2 th:text="#{buy.title.message}"></h2>
+    <form class="navbar-form" action="/buy/list">
+        <div class="form-group">
+            <input name="searchText" type="text" class="form-control" size="50"
+                   th:placeholder="#{buy.field.search.searchText}">
+        </div>
+        <button type="submit" class="btn btn-default" th:text="#{buy.field.search.button}"></button>
+    </form>
+    <p th:placeholder="#{buy.pMessage}"></p>
+
+    <div class="table-responsive">
+        <table class="table table-hover" th:fragment="tableProducts"
+               id="tableProducts">
+            <thead>
+            <tr>
+                <th th:text="#{product.field.title}"></th>
+                <th th:text="#{product.field.description}"></th>
+                <th th:text="#{product.field.price}"></th>
+                <th class="col-md-1"></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${productList}">
+                <td th:text="${product.title}">Title</td>
+                <td th:text="${product.description}">Description</td>
+                <td th:text="${product.getFormatedPrice()}+' €'">15 €</td>
+                <td><p th:if="${product.sold}" th:text="#{buy.field.sold}"></p>
+                    <a th:if="${!product.sold}" th:text="#{buy.field.buy}"
+                       th:href="${'/buy/buyProduct/' + product.id}"></a>
+                    <a th:text="#{buy.field.message}"
+                       th:href="${'/product/conversation/' + product.id}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer th:replace="fragments/pagination"/>
+
+</div>
+
+
+</body>
+</html>
