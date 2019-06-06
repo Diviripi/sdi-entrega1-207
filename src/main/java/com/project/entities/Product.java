@@ -57,6 +57,11 @@ public class Product {
         this.highlighted = highlighted;
     }
 
+    public Product(String title,String description, double price,User user, User buyer){
+        this(title,description,price,user);
+        setBuyer(buyer);
+    }
+
     public String getTitle() {
         return title;
     }
@@ -147,5 +152,6 @@ public class Product {
 
     public void setBuyer(User buyer) {
         this.buyer = buyer;
+        this.setSold(true);
     }
 }

@@ -1,5 +1,7 @@
 package com.project.tests;
 
+import com.project.repositories.ConversationRepository;
+import com.project.repositories.MessageRepository;
 import com.project.repositories.ProductRepository;
 import com.project.repositories.UserRepository;
 import com.project.services.InsertSampleDataService;
@@ -38,6 +40,12 @@ public class ProjectTests {
     ProductRepository productRepository;
 
     @Autowired
+    private MessageRepository messageRepository;
+
+    @Autowired
+    private ConversationRepository conversationRepository;
+
+    @Autowired
     private InsertSampleDataService insertSampleDataService;
 
     // En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
@@ -68,6 +76,8 @@ public class ProjectTests {
     }
 
     public void initdb() {
+        messageRepository.deleteAll();
+        conversationRepository.deleteAll();
         productRepository.deleteAll();
         usersRepository.deleteAll();
 
@@ -200,7 +210,7 @@ public class ProjectTests {
     }
 
     //Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema
-    //por defecto existen 6 usuarios(1 admin,javi,ivan, 3 autogenerados)
+    //por defecto existen 5 usuarios(1 admin,javi,ivan, 2 autogenerados)
     @Test
     public void PR12() {
         PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
@@ -208,7 +218,7 @@ public class ProjectTests {
         PO_NavView.clickOption(driver, "/users/list", "class", "btn btn-primary");
         List<WebElement> elementos = PO_View
                 .checkElement(driver, "free", "//tbody/tr");
-        assertEquals(6, elementos.size());
+        assertEquals(5, elementos.size());
 
     }
 
@@ -228,7 +238,7 @@ public class ProjectTests {
         PO_ListUsers.clickDeleteButton(driver);
         elementos = PO_View
                 .checkElement(driver, "free", "//tbody/tr");
-        assertEquals(5,elementos.size());
+        assertEquals(4,elementos.size());
         PO_ListUsers.elementoNoPresenteEnLaPagina(driver,"Javi");
     }
 
@@ -250,7 +260,7 @@ public class ProjectTests {
         PO_ListUsers.clickDeleteButton(driver);
         elementos = PO_View
                 .checkElement(driver, "free", "//tbody/tr");
-        assertEquals(5,elementos.size());
+        assertEquals(4,elementos.size());
         PO_ListUsers.elementoNoPresenteEnLaPagina(driver,elementoAEliminar);
     }
 
@@ -269,7 +279,7 @@ public class ProjectTests {
         PO_ListUsers.clickDeleteButton(driver);
         elementos = PO_View
                 .checkElement(driver, "free", "//tbody/tr");
-        assertEquals(3,elementos.size());
+        assertEquals(2,elementos.size());
         PO_ListUsers.elementoNoPresenteEnLaPagina(driver,"Ivan");
         PO_ListUsers.elementoNoPresenteEnLaPagina(driver,"Javi");
         PO_ListUsers.elementoNoPresenteEnLaPagina(driver,"User01");

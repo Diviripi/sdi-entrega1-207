@@ -4,9 +4,11 @@ import com.project.entities.Product;
 import com.project.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -36,4 +38,14 @@ ProductRepository extends CrudRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.user.id <>?1")
     Page<Product> findAllNoUser(Pageable pageable, Long id);
+
+    @Transactional
+    @Modifying
+    @Query("delete from Product where user_id=?1")
+    void deleteByUserId(Long id);
+
+    @Transactional
+    @Modifying
+    @Query("update Product  set buyer_id=null where buyer_id=?1")
+    void clearBoughtProducts(Long id);
 }

@@ -32,4 +32,7 @@ public interface ConversationRepository extends CrudRepository<Conversation, Lon
 
     @Query("select c from Conversation c where c.user1.id=?1 or c.user2.id =?1")
     List<Conversation> findAllByUserId(Long id);
+
+    @Query("select c from Conversation  c where product_id=?1")
+    List<Conversation> findAllByProduct(Long id);
 }

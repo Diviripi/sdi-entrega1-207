@@ -1,7 +1,10 @@
 package com.project.services;
 
+import com.project.entities.Conversation;
 import com.project.entities.Product;
 import com.project.entities.User;
+import com.project.repositories.ConversationRepository;
+import com.project.repositories.MessageRepository;
 import com.project.repositories.ProductRepository;
 import com.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -25,6 +25,12 @@ public class ProductService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ConversationRepository conversationRepository;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     public void addProduct(Product product) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -56,6 +62,15 @@ public class ProductService {
         User user = userRepository.findByEmail(email);
         Product product = productRepository.findById(id).get();
         if (product.getUser().equals(user)) {
+            //borrar conversaciones y mensajes
+
+            List<Conversation> convers = conversationRepository.findAllByProduct(id);
+            convers.forEach(c -> {
+                messageRepository.deleteByConverId(c.getId());
+                conversationRepository.delete(c);
+            });
+
+
             productRepository.delete(product);
         }
 

@@ -71,6 +71,8 @@ public class UserService {
         //Sus productos
         //Con el borrado en cascada deberia borrase
         //El usuario
+        productRepository.deleteByUserId(id);
+        productRepository.clearBoughtProducts(id);
         usersRepository.deleteById(id);
 
     }
