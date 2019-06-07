@@ -417,4 +417,244 @@ public class ProjectTests {
         assertEquals(0,list.size());
     }
 
-  }
+
+    //comprar oferta con saldo positivo
+    @Test
+    public void PR23() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+        List<WebElement> elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/buy/list')]");
+        elementos.get(0).click();
+        PO_BuyList.rellenarCuadroDeBusqueda(driver, "Producto positivo");
+        PO_BuyList.comprarOferta(driver, 0);
+        PO_NavView.clickCuenta(driver);
+        PO_View.checkElement(driver, "text", "80");
+    }
+
+
+    //comprar oferta con saldo a 0
+    @Test
+    public void PR24() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+        List<WebElement> elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/buy/list')]");
+        elementos.get(0).click();
+        PO_BuyList.rellenarCuadroDeBusqueda(driver, "Producto cero");
+        PO_BuyList.comprarOferta(driver, 0);
+        PO_NavView.clickCuenta(driver);
+        PO_View.checkElement(driver, "text", "0");
+    }
+
+    //comprar oferta con saldo a negativo
+    @Test
+    public void PR25() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+        List<WebElement> elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/buy/list')]");
+        elementos.get(0).click();
+        PO_BuyList.rellenarCuadroDeBusqueda(driver, "Producto negativo");
+        PO_BuyList.comprarOferta(driver, 0);
+        PO_NavView.clickCuenta(driver);
+        PO_View.checkElement(driver, "text", "No tienes");
+    }
+
+    //ver ofertas compradas
+    @Test
+    public void PR26() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+        PO_NavView.clickOption(driver, "/bought/list", "text", "Precio");
+        PO_BoughtOffers.countMyOffers(driver, 2);
+
+    }
+
+    //Internacionalizacion de 4 paginas
+    @Test
+    public void PR27() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "admin@email.com", "admin");
+
+        //Tienda
+        PO_NavView.clickOption(driver, "/buy/list", "text", "Buscar");
+        PO_NavView.changeIdiom(driver,"btnEnglish");
+        PO_View.checkElement(driver,"text","Search");
+        PO_NavView.changeIdiom(driver,"btnSpanish");
+        PO_View.checkElement(driver,"text","Buscar");
+        //Productos comprados
+        PO_NavView.clickOption(driver, "/bought/list", "text", "Precio");
+        PO_NavView.changeIdiom(driver,"btnEnglish");
+        PO_View.checkElement(driver,"text","Price");
+        PO_NavView.changeIdiom(driver,"btnSpanish");
+        PO_View.checkElement(driver,"text","Precio");
+        //Usuarios
+        PO_NavView.clickOption(driver, "/users/list", "text", "Nombre");
+        PO_NavView.changeIdiom(driver,"btnEnglish");
+        PO_View.checkElement(driver,"text","Name");
+        PO_NavView.changeIdiom(driver,"btnSpanish");
+        PO_View.checkElement(driver,"text","Nombre");
+        //Alta de oferta
+        //Dropdown
+        List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'products-menu')]/a");
+        elementos.get(0).click();
+        PO_NavView.clickOption(driver, "/sales/addProduct", "text", "Título");
+        PO_NavView.changeIdiom(driver,"btnEnglish");
+        PO_View.checkElement(driver,"text","title");
+        PO_NavView.changeIdiom(driver,"btnSpanish");
+        PO_View.checkElement(driver,"text","Título");
+
+    }
+
+    //Seguridad listar usuarios
+    @Test
+    public void PR28() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_View.elementoNoPresenteEnLaPagina(driver,"Usuarios");
+        driver.navigate().to(URL+"/users/list");//forzar acceso aunque no aparezca el boton
+        PO_View.checkElement(driver,"text","eMail");
+    }
+
+    //Seguridad listar ofertas propias
+    @Test
+    public void PR29() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_View.elementoNoPresenteEnLaPagina(driver,"productos");
+        driver.navigate().to(URL+"/sales/list");//forzar acceso aunque no aparezca el boton
+        PO_View.checkElement(driver,"text","eMail");
+    }
+
+    //Seguridad listar usuarios sin ser administrador
+    @Test
+    public void PR30() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+        PO_View.elementoNoPresenteEnLaPagina(driver,"Usuarios");
+        driver.navigate().to(URL+"/users/list");//forzar acceso aunque no aparezca el boton
+
+        PO_View.checkElement(driver,"text","Error");
+    }
+
+    //Mensaje en nueva conversacion
+    @Test
+    public void PR31() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        PO_NavView.clickOption(driver, "/buy/list", "text", "Buscar");
+        PO_BuyList.rellenarCuadroDeBusqueda(driver,"Cuadro");
+        PO_BuyList.mensajeAOferta(driver,0);
+        PO_Mensajes.enviarMensaje(driver,"Hola");
+        PO_View.checkElement(driver,"text","Hola");
+    }
+
+    //Mensaje de una conversacion ya existente
+    @Test
+    public void PR32() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        PO_NavView.clickOption(driver, "/conversations/list", "text", "Listado");
+        PO_ConversationList.seeConversation(driver,0);
+        PO_View.checkElement(driver,"text","Mensaje1");
+        PO_Mensajes.enviarMensaje(driver,"Hola");
+        PO_View.checkElement(driver,"text","Hola");
+    }
+
+    //Mostrar listado de conversaciones, comprobar que hay las qu debe haber
+    @Test
+    public void PR33() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        PO_NavView.clickOption(driver, "/conversations/list", "text", "Listado");
+        PO_ConversationList.countConversations(driver,2);
+
+    }
+
+    //Sobre enlace de conversaciones, pinchar la primera y borrarla
+    @Test
+    public void PR34() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        PO_NavView.clickOption(driver, "/conversations/list", "text", "Listado");
+        PO_ConversationList.deleteConversation(driver,0);
+        PO_ConversationList.countConversations(driver,1);
+
+    }
+
+    //Sobre enlace de conversaciones, pinchar la ultima y borrarla
+    @Test
+    public void PR35() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        PO_NavView.clickOption(driver, "/conversations/list", "text", "Listado");
+        PO_ConversationList.deleteConversation(driver,1);
+        PO_ConversationList.countConversations(driver,1);
+
+    }
+
+    //Crear oferta y destacarla durante la creacion
+    @Test
+    public void PR36() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        //add offer
+        List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'products-menu')]/a");
+        elementos.get(0).click();
+
+        elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, '/sales/addProduct')]");
+        elementos.get(0).click();
+
+        PO_AddProduct.rellenarFormularioDestacado(driver,"NuevoElemento","Una descripcion","12");
+        //see highlighted
+         elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'products-menu')]/a");
+        elementos.get(0).click();
+
+        elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, '/sales/highlighted')]");
+        elementos.get(0).click();
+
+        PO_View.checkElement(driver,"text","NuevoElemento");
+
+        PO_NavView.clickCuenta(driver);
+        PO_View.checkElement(driver, "text", "80");
+
+    }
+
+    //Sobre el listado de ofertas destacarla
+    @Test
+    public void PR37() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "javi@email.com", "123456");
+
+        String elementoDestacado=PO_OfertasPropias.destacar(driver,0);
+        //see highlighted
+        List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'products-menu')]/a");
+        elementos.get(0).click();
+
+        elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, '/sales/highlighted')]");
+        elementos.get(0).click();
+
+        PO_View.checkElement(driver,"text",elementoDestacado);
+
+        PO_NavView.clickCuenta(driver);
+        PO_View.checkElement(driver, "text", "80");
+
+    }
+
+    //Sobre el listado de ofertas destacarla
+    @Test
+    public void PR38() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "user3@email.com", "123456");
+
+        String elementoDestacado=PO_OfertasPropias.destacar(driver,0);
+        //see error
+
+        PO_View.checkElement(driver, "text", "No tienes");
+
+    }
+
+
+}

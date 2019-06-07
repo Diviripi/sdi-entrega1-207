@@ -49,6 +49,7 @@ public class InsertSampleDataService {
         User user3 = new User("user3@email.com", "User3", "3");
         user3.setPassword("123456");
         user3.setRole(rolesService.getRoles()[0]);
+        user3.setMoney(19);
         usersService.addUser(user3);
 
         User user4 = new User("user4@email.com", "User4", "4");
@@ -108,6 +109,9 @@ public class InsertSampleDataService {
                 add(new Product("Producto 4", "Producto 4", 1400, user4, user3));
                 add(product5);
                 add(new Product("Producto 6", "Producto 6", 1, user4, user2));
+                add(new Product("Producto positivo", "Positivo", 20, user4));
+                add(new Product("Producto cero", "cero", 100, user4));
+                add(new Product("Producto negativo", "Producto 6", 101, user4));
             }
         };
         //user4.setProducts(user4Products);

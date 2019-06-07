@@ -26,4 +26,11 @@ public class PO_AddProduct  extends PO_View{
 
     By boton = By.className("btn");
 		driver.findElement(boton).click();
-}}
+}
+
+    public static void rellenarFormularioDestacado(WebDriver driver, String titulo, String descripcion, String precio) {
+        WebElement destacar = driver.findElement(By.name("highlighted"));
+        destacar.click();
+        rellenarFormulario(driver,titulo,descripcion,precio);
+    }
+}

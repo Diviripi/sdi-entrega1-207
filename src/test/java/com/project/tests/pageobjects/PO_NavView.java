@@ -31,7 +31,7 @@ public class PO_NavView extends PO_View {
 		// Esperamos a que sea visible un elemento concreto
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, criterio, textoDestino, getTimeout());
 		// Tiene que haber un sólo elemento.
-		assertTrue(elementos.size() == 1);
+		assertTrue("El nuero de elementos es: "+elementos.size(),elementos.size() == 1);
 	}
 
 	/**
@@ -51,6 +51,11 @@ public class PO_NavView extends PO_View {
 		// SeleniumUtils.esperarSegundos(driver, 2);
 		// CLickamos la opción Inglés partiendo de la opción Español
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", textLanguage, getTimeout());
+		elementos.get(0).click();
+	}
+
+	public static void clickCuenta(WebDriver driver) {
+		List<WebElement> elementos=SeleniumUtils.EsperaCargaPagina(driver,"id","account-menu",getTimeout());
 		elementos.get(0).click();
 	}
 }

@@ -47,7 +47,10 @@ public class UserService {
 
     public void addUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setMoney(100);
+        if(user.getMoney()==0){
+            user.setMoney(100);
+        }
+
         usersRepository.save(user);
     }
 
