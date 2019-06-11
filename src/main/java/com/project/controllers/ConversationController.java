@@ -8,6 +8,8 @@ import com.project.services.ConversationService;
 import com.project.services.MessageService;
 import com.project.services.ProductService;
 import com.project.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,8 +39,11 @@ public class ConversationController {
     @Autowired
     MessageService messageService;
 
+    Logger logger = LoggerFactory.getLogger(ConversationController.class);
+
     @RequestMapping(value = "/product/newMessage/{id}", method = RequestMethod.GET)
     public String sendMessage(Model model, @PathVariable Long id) {
+        logger.info("See message");
         Product product = productService.getById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
@@ -50,6 +55,7 @@ public class ConversationController {
 
     @RequestMapping(value = "/product/newMessage/{id}", method = RequestMethod.POST)
     public String createMessage(Model model, @PathVariable Long id, @RequestParam("message") String message) {
+        logger.info("Sending new message");
         Product product = productService.getById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((Authentication) auth).getName();
@@ -67,6 +73,7 @@ public class ConversationController {
 
     @RequestMapping(value = "/product/sendMessage/{id}", method = RequestMethod.POST)
     public String sendMessage(Model model, @PathVariable Long id, @RequestParam("message") String message) {
+        logger.info("Sending new message");
         Product product = productService.getById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((Authentication) auth).getName();
@@ -82,6 +89,7 @@ public class ConversationController {
 
     @RequestMapping(value = "/product/conversation/{id}", method = RequestMethod.GET)
     public String listConversation(Model model, @PathVariable Long id) {
+        logger.info("See conversation");
         Product product = productService.getById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((Authentication) auth).getName();
@@ -103,6 +111,7 @@ public class ConversationController {
 
     @RequestMapping("conversations/list")
     public String listConversation(Model model, Pageable pageable) {
+        logger.info("See conversations");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((Authentication) auth).getName();
         User user = userService.getUserByEmail(email);
@@ -115,6 +124,7 @@ public class ConversationController {
 
     @RequestMapping("product/conversation/delete/{id}")
     public String deleteConversation(Model model, Pageable pageable, @PathVariable Long id) {
+        logger.info("Delete conversation");
         Product product = productService.getById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = ((Authentication) auth).getName();

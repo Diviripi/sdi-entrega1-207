@@ -4,6 +4,8 @@ import com.project.entities.Product;
 import com.project.entities.User;
 import com.project.services.ProductService;
 import com.project.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,10 +30,13 @@ public class BuyController {
     @Autowired
     UserService userService;
 
+    Logger logger = LoggerFactory.getLogger(BuyController.class);
+
 
     @RequestMapping("/buy/list")
     public String getList(Model model, Pageable pageable, Principal principal,
                           @RequestParam(value = "", required = false) String searchText) {
+        logger.info("List store products");
         Page<Product> products = new PageImpl<Product>(new LinkedList<Product>());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
@@ -52,6 +57,7 @@ public class BuyController {
     @RequestMapping("/bought/list")
     public String getBoughtList(Model model, Pageable pageable, Principal principal,
                                 @RequestParam(value = "", required = false) String searchText) {
+        logger.info("List bought products");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         User user = userService.getUserByEmail(email);
@@ -65,7 +71,7 @@ public class BuyController {
 
     @RequestMapping("/buy/buyProduct/{id}")
     public String buyProduct(@PathVariable Long id) {
-        //TODO make this like it should, it should decrease he counter and be only to buy if the user counter
+        logger.info("Buy product");
         //have enough money
         Product product = productService.getById(id);
         double price = product.getPrice();
@@ -77,8 +83,10 @@ public class BuyController {
         if (userMoney >= price) {
             productService.buyProduct(product.getId(),user);
             userService.updateMoney(user, price);
+            logger.info("Product bought");
             return "redirect:/buy/list";
         } else {
+            logger.info("Not enough money");
             return "redirect:/buy/product/notEnoughMoney/{id}";
         }
     }

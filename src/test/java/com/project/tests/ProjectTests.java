@@ -530,7 +530,7 @@ public class ProjectTests {
         PO_View.elementoNoPresenteEnLaPagina(driver,"Usuarios");
         driver.navigate().to(URL+"/users/list");//forzar acceso aunque no aparezca el boton
 
-        PO_View.checkElement(driver,"text","Error");
+        PO_View.checkElement(driver,"free","//*[contains(text(),'Forbidden')]");
     }
 
     //Mensaje en nueva conversacion
